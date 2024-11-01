@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Acronis Security Alert</title>
+    <style>
+      p {
+        margin-bottom: 1ex;
+      }
+
+      table td {
+        mso-line-height-rule: exactly
+      }
+
+      a img {
+        border: none
+      }
+
+      b,
+      strong {
+        font-weight: 700
+      }
+
+      th {
+        padding: 0
+      }
+
+      td {
+        text-decoration: none
+      }
+
+      a {
+        outline: 0;
+        color: #0081ed;
+        text-decoration: underline
+      }
+
+      .highlight-phone {
+        color: inherit;
+        border: none
+      }
+
+      .hidden {
+        display: none
+      }
+
+      .nl a,
+      .nl span {
+        color: inherit !important;
+        text-decoration: none !important;
+        border: none !important
+      }
+
+      a:hover {
+        text-decoration: none !important
+      }
+
+      .h-u a:hover {
+        text-decoration: underline !important
+      }
+
+      .btn-01:hover {
+        background-color: #e8e7e6 !important
+      }
+
+      .active a:hover {
+        opacity: .8
+      }
+
+      .active a,
+      .btn-01 {
+        transition: all .3s ease
+      }
+
+      ul {
+        Margin: 0 0 0 20px;
+        padding: 0
+      }
+
+      img+div {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+        opacity: 0 !important
+      }
+
+      @media only screen and (max-width:375px) and (min-width:374px) {
+        .gmail-fix {
+          min-width: 374px !important
+        }
+      }
+
+      @media only screen and (max-width:414px) and (min-width:413px) {
+        .gmail-fix {
+          min-width: 413px !important
+        }
+      }
+
+      @media only screen and (max-width:500px) {
+        .flexible {
+          width: 100% !important
+        }
+
+        .img-flex img {
+          width: 100% !important;
+          height: auto !important
+        }
+
+        .table-holder {
+          display: table !important;
+          width: 100% !important
+        }
+
+        .thead {
+          display: table-header-group !important;
+          width: 100% !important
+        }
+
+        .tfoot {
+          display: table-footer-group !important;
+          width: 100% !important
+        }
+
+        .tflex {
+          display: block !important;
+          width: 100% !important
+        }
+
+        .hide {
+          display: none !important;
+          width: 0 !important;
+          height: 0 !important;
+          padding: 0 !important;
+          font-size: 0 !important;
+          line-height: 0 !important
+        }
+
+        .tc {
+          margin: 0 auto !important;
+          float: none !important
+        }
+
+        .ac {
+          text-align: center !important
+        }
+
+        .h-0 {
+          height: 0 !important
+        }
+
+        .p-0 {
+          padding: 0 !important
+        }
+
+        .p-48 {
+          padding: 48px !important
+        }
+
+        .p-30 {
+          padding: 30px !important
+        }
+
+        .plr-0 {
+          padding-left: 0 !important;
+          padding-right: 0 !important
+        }
+
+        .plr-10 {
+          padding-left: 10px !important;
+          padding-right: 10px !important
+        }
+
+        .pb-30 {
+          padding-bottom: 30px !important
+        }
+
+        .pl70 {
+          padding-left: 70px !important
+        }
+
+        .t03 {
+          font-size: 24px !important;
+          line-height: 32px !important
+        }
+
+        .t01 {
+          font-size: 20px !important;
+          line-height: 26px !important
+        }
+
+        .t02 {
+          font-size: 16px !important;
+          line-height: 24px !important;
+          padding: 10px 0 20px
+        }
+      }
+    </style>
+  </head>
+
+  <body bgcolor="#e9f3ff" style="margin:0;padding:0;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%">
+    <table class="gmail-fix" bgcolor="#e9f3ff" width="100%" cellspacing="0" cellpadding="0" style="min-width:320px">
+      <tbody>
+        <tr>
+          <td>
+            <table class="flexible" id="App" align="center" width="100%" cellpadding="0" cellspacing="0"
+              style="min-width:640px;max-width:800px;margin:0 auto;">
+              <tbody>
+                <tr>
+                  <td bgcolor="#f6faff" style="padding:32px 48px 48px;">
+                    <h2
+                      style="font: normal 18px/24px Arial,Helvetica,sans-serif;color:rgb(64,139,234);padding:0 0 8px;margin:0;">
+                      IAMP notification</h2>
+                    <h1 style="font: bold 24px/28px Arial,Helvetica,sans-serif;color:rgb(0,32,77);margin:0">
+                      <%= @title %></h1>
+                  </td>
+                </tr>
+                <tr>
+                  <td bgcolor="#ffffff" style="padding:48px; font:16px/24px Arial,Helvetica,sans-serif; color:#002a61">
+
+                    <%= yield %>
+
+                    <table align="center" cellpadding="0" cellspacing="0" style="margin:48px auto 0">
+                      <tbody>
+                        <tr>
+                          <td class="button-link" bgcolor="#9bc225" align="center"
+                            style="padding:8px 16px;border-radius:4px;font:16px/20px Arial,Helvetica,sans-serif;font-weight:bold;min-width: 100px;">
+                            <a style="color:#ffffff;text-decoration:none" href="https://<%= ENV['HOSTNAME'] %>/">
+                              <%= @button %>
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td bgcolor="#ffffff" style="padding:48px;border-top:1px solid #e4ebf4;vertical-align:top">
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td width="70" valign="top">
+                          <a href="https://www.acronis.com/" target="_blank">
+                            <img src="https://i.postimg.cc/qqpSmrR5/a-sign-default.png" width="32" height="32" border="0"
+                              alt="A"
+                              style="background-color:#fffffe;vertical-align:top;width:32px;height:32px;padding:4px;border-radius:4px;font:32px/32px Arial,Helvetica,sans-serif;color:#002a61">
+                          </a>
+                        </td>
+                        <td valign="top">
+                          <table width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td class="nl"
+                                style="padding:0 0 24px;font:12px/16px Arial,Helvetica,sans-serif;color:#002a61">
+                                &copy; 2024 Acronis International GmbH.<br>
+                                Rheinweg 9, 8200 Schaffhausen, Switzerland.<br>
+                                All rights reserved.</td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <table cellpadding="0" cellspacing="0">
+                                  <tr>
+                                    <td class="active" style="vertical-align:bottom;mso-line-height-rule:at-least">
+                                      <a href="https://www.youtube.com/user/Acronis/" target="_blank">
+                                        <img src="https://i.postimg.cc/J0LmjNx8/yt.png" width="16" height="16" border="0"
+                                          alt="YouTube" style="vertical-align:top;width:16px;height:16px">
+                                      </a>
+                                    </td>
+                                    <td width="16">
+                                    </td>
+                                    <td class="active" style="vertical-align:bottom;mso-line-height-rule:at-least">
+                                      <a href="https://www.linkedin.com/company/acronis" target="_blank">
+                                        <img src="https://i.postimg.cc/ZYDwQbpk/in.png" width="16" height="16" border="0"
+                                          alt="LinkedIn" style="vertical-align:top;width:16px;height:16px">
+                                      </a>
+                                    </td>
+                                    <td width="16">
+                                    </td>
+                                    <td class="active" style="vertical-align:bottom;mso-line-height-rule:at-least">
+                                      <a href="https://twitter.com/acronis" target="_blank">
+                                        <img src="https://i.postimg.cc/x1bHdYXz/tw.png" width="16" height="16" border="0"
+                                          alt="Twitter" style="vertical-align:top;width:16px;height:16px">
+                                      </a>
+                                    </td>
+                                    <td width="16">
+                                    </td>
+                                    <td class="active" style="vertical-align:bottom;mso-line-height-rule:at-least">
+                                      <a href="https://www.instagram.com/acronis/" target="_blank">
+                                        <img src="https://i.postimg.cc/vHJ3Q003/ig.png" width="16" height="16" border="0"
+                                          alt="Instagram" style="vertical-align:top;width:16px;height:16px">
+                                      </a>
+                                    </td>
+                                    <td width="16">
+                                    </td>
+                                    <td class="active" style="vertical-align:bottom;mso-line-height-rule:at-least">
+                                      <a href="https://www.facebook.com/Acronis" target="_blank">
+                                        <img src="https://i.postimg.cc/XqhxBL4N/fb.png" width="16" height="16" border="0"
+                                          alt="Facebook" style="vertical-align:top;width:16px;height:16px">
+                                      </a>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+
+</html>

@@ -1,0 +1,6 @@
+<div class="px-4 py-2 font-semibold col-span-1">Approvers list</div>
+<% if @role[:approval_workflow_properties]['list1'].blank? %>
+  <div class="px-4 py-2 col-span-2 text-red-700">no approvers</div>
+<% else %>
+  <div class="px-4 py-2 col-span-2"><%= User.find(@role[:approval_workflow_properties]['list1']).map(&:displayname).join(", ") %></div>
+<% end %>

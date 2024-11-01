@@ -1,0 +1,7 @@
+<p><strong>System:</strong>&nbsp;<%= @access.role.system&.name %></p>
+<p><strong>Role:</strong>&nbsp;<%= @access.role&.name %></p>
+<p><strong>User:</strong>&nbsp;<%= @access.user&.displayname %></p>
+<% if @access.justification.present? %>
+  <p><strong>Justification:</strong>&nbsp;<%= @access.justification %></p>
+<% end %>
+<p><strong>Current approvers:</strong>&nbsp;<%= @approvers.join(", ") %></p>

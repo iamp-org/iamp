@@ -1,0 +1,28 @@
+<%= turbo_frame_tag :remote_modal, target: :_top do %>
+
+  <div data-controller="modal" class="hidden fixed inset-0 overflow-y-auto flex items-center justify-center backdrop" style="z-index: 9999;">
+    <!-- Modal Card -->
+    <div class="m-1 bg-white rounded shadow max-h-screen w-full max-w-lg relative">
+      <!-- Close button moved to top right corner -->
+      <%= link_to '#', data: { action: 'click->modal#close' }, class: 'absolute top-0 right-0 m-4' do %>
+        <%= content_tag(:i, "close", class: "material-icons") %>
+      <% end %>
+      
+      <div class="p-8">
+        <%= form_with model: @access, url: access_path(@access), method: :delete, data: {turbo: false} do |form| %>
+          <%= hidden_field_tag :referring_page, request.referrer %>
+          
+          <%= form.label :comment, class: "block uppercase text-xs font-bold mb-2 mt-3" %>
+          <%= form.text_area :comment, class: "border-1 py-0.5 border-gray-200 rounded focus:ring-1 w-full" %>
+          <div class="flex justify-end mt-6">
+            <div class="flex lg:flex-row lg:items-center">
+              <%= form.submit "Submit", class: "px-3 py-1 text-xs font-medium text-center text-white bg-red-600 rounded-sm hover:bg-red-700 w-20 h-6" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+
+<% end %>

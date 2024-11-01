@@ -1,0 +1,29 @@
+<div class="container px-5 py-1 mx-auto text-sm">
+    <div class="p-1">
+      <div class="flex flex-ow scrollbar-hide">
+        <div class="basis-1/2">
+          <div class="lg:w-2/3">
+          </div>
+        </div>
+        <div class="basis-1/2 justify-end flex p-1">
+          <%= button_to "Create", new_token_path, method: :get, data: { turbo_frame: :main }, class: "px-3 py-1 text-xs font-medium text-center text-white bg-blue-700 rounded-sm hover:bg-blue-800" %>
+        </div>
+      </div>
+    </div>
+
+    <table class="w-full border table-auto md:table-fixed">
+      <thead>
+        <tr class="bg-gray-100 text-gray text-sm leading-3">
+          <th class="py-2 px-3 text-left md:w-40">ID</th>
+          <th class="py-2 px-3 text-left md:w-32">User</th>
+          <th class="py-2 px-3 text-left md:w-24">Expires at</th>
+          <th class="py-2 px-3 text-left md:w-10"></th>
+        </tr>
+      </thead>
+      <tbody id="roles" class="text-gray-600 text-sm font-light">
+        <% @tokens.each do |token| %>
+            <%= render "token", token: token %>
+        <% end %>
+      </tbody>
+    </table>
+</div>

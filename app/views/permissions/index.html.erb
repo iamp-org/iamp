@@ -1,0 +1,41 @@
+
+<div class="container px-5 py-1 mx-auto text-sm">
+    <div class="p-1">
+      <div class="flex flex-ow scrollbar-hide">
+        <div class="basis-1/2">
+          <div class="lg:w-2/3">
+            <%= search_form_for @q, data: { turbo_frame: :results, controller: "filter", action: "input->filter#submit" } do |f| %>
+              <%= f.search_field :user_or_system_cont,
+                                  placeholder: "Filter",
+                                  autofocus: true,
+                                  autocomplete: 'off',
+                                  class: "flex rounded-sm border border-gray-200 focus:ring-1 py-0.5 w-full bg-white" %>
+            <% end %>
+          </div>
+        </div>
+        <div class="basis-1/2 justify-end flex p-1">
+          <%= button_to "Create", new_permission_path, method: :get, data: { turbo_frame: :main }, class: "px-3 py-1 text-xs font-medium text-center text-white bg-blue-700 rounded-sm hover:bg-blue-800" %>
+        </div>
+      </div>
+    </div>
+
+  <%= turbo_frame_tag :results, data: { turbo_action: 'advance' } do %>
+      <table class="w-full border table-auto md:table-fixed">
+        <thead>
+          <tr class="bg-gray-100 text-gray text-sm leading-3">
+            <th class="py-2 px-3 text-left md:w-56"><%= sort_link @q, :user_displayname, "User", {}, { data: { turbo_frame: :results} } %></th>
+            <th class="py-2 px-3 text-left md:w-56"><%= sort_link @q, :system_name, "System", {}, { data: { turbo_frame: :results} } %></th>
+            <th class="py-2 px-3 text-left md:w-10"></th>
+          </tr>
+        </thead>
+        <tbody id="roles" class="text-gray-600 text-sm font-light">
+        </tbody>
+      </table>
+
+  <%= turbo_frame_tag :pagination, loading: :lazy,  data: { turbo_action: 'advance' },
+                      src: permissions_path(format: :turbo_stream, q: params[:q]&.to_unsafe_h) %>
+  <% end %>
+
+
+
+</div>

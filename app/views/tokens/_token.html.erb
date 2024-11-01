@@ -1,0 +1,21 @@
+<tr id="<%= dom_id(token) %>" class="border-b border-gray-200 hover:bg-gray-100">
+  <td class="px-3 text-left">
+    <p class="text-xs font-semibold text-gray-600 break-words"><%= token.id %></p>
+  </td>
+
+  <td class="px-3 text-left">
+    <p class="text-xs font-semibold text-gray-600 break-words"><%= token.user.displayname %></p>
+  </td>
+
+  <td class="px-3 text-left">
+    <p class="text-xs font-semibold text-gray-600 break-words"><%= token.expires_at.strftime("%B %d, %Y %H:%M") %></p>
+  </td>
+
+  <td class="px-3 text-left">
+    <div class="text-xs font-semibold text-gray-600 break-words justify-end flex items-center">
+      <%= button_to "Delete", token, method: :delete, data: { turbo: false }, 
+                  class: "px-3 py-1 text-xs font-medium text-center text-red-800 mr-1 w-20 h-6" %>
+    </div>
+  </td>
+
+</tr>

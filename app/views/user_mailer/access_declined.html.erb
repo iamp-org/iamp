@@ -1,0 +1,5 @@
+<p><strong>System:</strong>&nbsp;<%= @access.role.system&.name %></p>
+<p><strong>Role:</strong>&nbsp;<%= @access.role&.name %></p>
+<% if @comment.present? %>
+  <p><strong>Comment:</strong>&nbsp;<%= @comment %></p>
+<% end %>

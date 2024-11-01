@@ -1,0 +1,49 @@
+<%= turbo_frame_tag :remote_modal_new_key, target: :_top do %>
+  <div data-controller="modal" class="hidden fixed inset-0 overflow-y-auto flex items-center justify-center backdrop " style="z-index: 9999;">
+    <div class="m-1 bg-white rounded shadow max-h-screen w-full max-w-lg relative">
+
+      <%= link_to ssh_preferences_path, data: { action: 'click->modal#close' }, class: 'absolute top-0 right-0 m-4' do %>
+        <%= content_tag(:i, "close", class: "material-icons") %>
+      <% end %>
+      
+      <div class="p-6">
+        <div data-controller="tabs" data-tabs-active-tab-class="-mb-px border-l border-t border-r rounded-t text-blue-700">
+          <ul class="list-reset flex border-b items-center justify-center uppercase">
+            <li class="mb-1 mr-1 cursor-pointer hover:text-blue-700 transition ease-in-out duration-150" data-tabs-target="tab" data-action="click->tabs#change">
+              <span class="border-transparent border-b-2 pb-1 px-2 font-semibold">PIV</span>
+            </li>
+            <!--li class="mb-1 mr-1 cursor-pointer hover:text-blue-700 transition ease-in-out duration-150 " data-tabs-target="tab" data-action="click->tabs#change">
+              <span class="border-transparent border-b-2 pb-1 px-2 font-semibold">FIDO2</span>
+            </li-->
+            <!--li class="mb-1 mr-1 cursor-pointer hover:text-blue-700 transition ease-in-out duration-150 " data-tabs-target="tab" data-action="click->tabs#change">
+              <span class="border-transparent border-b-2 pb-1 px-2 font-semibold">OpenPGP</span>
+            </li-->
+          </ul>
+
+          <div class="hidden py-4 px-4" data-tabs-target="panel">
+            <%= form_with url: ssh_keys_path, method: :post, data: {turbo: false} do |form| %>
+              <div class="mb-4">
+                <%= form.label "Attestation Certificate (Intermediate)", class: "block text-sm font-medium text-gray-700" %>
+                <%= form.file_field :attestation_certificate, class: "mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm" %>
+              </div>
+
+              <div class="mb-4">
+                <%= form.label "Attestation Certificate (Statement)", class: "block text-sm font-medium text-gray-700" %>
+                <%= form.file_field :attestation_statement, class: "mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm" %>
+              </div>
+
+              <div class="flex justify-end mt-6">
+                <div class="flex lg:flex-row lg:items-center">
+                  <%= form.submit "Submit", class: "px-3 py-1 text-xs font-medium text-center text-white bg-blue-700 rounded-sm hover:bg-blue-800 w-20 h-6" %>
+                </div>
+              </div>
+            <% end %> 
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<% end %>

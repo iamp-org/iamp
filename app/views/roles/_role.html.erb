@@ -1,0 +1,19 @@
+<tr id="<%= dom_id(role) %>" class="border-b border-gray-200 hover:bg-gray-100">
+
+  <td class="px-3 text-left">
+    <p class="text-xs font-semibold text-gray-600 break-words"><%= link_to role.name, role, data: { turbo: :false } %></p>
+  </td>
+
+  <td class="px-3 text-left">
+    <p class="text-xs font-semibold text-gray-600 break-words"><%= role.system.name %></p>
+  </td>
+
+  <td class="px-3 text-left">
+    <% if role.is_active %>
+      <p class="text-xs font-semibold text-green-600 break-words">active</p>
+    <% else %>
+      <p class="text-xs font-semibold text-red-600 break-words">inactive</p>
+    <% end %>
+  </td>
+
+</tr>

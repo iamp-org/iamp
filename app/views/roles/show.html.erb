@@ -1,0 +1,163 @@
+<div class="container px-5 py-1 mx-auto text-sm">
+
+  <div class="p-1 flex flex-ow scrollbar-hide border-b border-gray-200">
+    <div class="basis-1/2 font-medium text-base">
+      Role details
+    </div>
+    <div class="basis-1/2 justify-end flex">
+      <% if current_user_has_write_permission_for_role?(@role) %>
+        <%= button_to "Delete", @role, method: :delete, data: { turbo: false }, 
+                      class: "px-3 py-1 text-xs font-medium text-center text-white bg-red-700 rounded-sm hover:bg-red-800 mr-1 w-20 h-6" %>
+        <%= button_to "Edit", edit_role_path, method: :get, data: { turbo: false }, 
+                      class: "px-3 py-1 text-xs font-medium text-center text-white bg-blue-700 rounded-sm hover:bg-blue-800 w-20 h-6" %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="w-full md:w-12/12">
+    <div class="grid md:grid-cols-1 text-xs">
+      <div class="grid grid-cols-3">
+
+        <div class="px-4 py-2 font-semibold col-span-1">Name</div>
+        <div class="px-4 py-2 col-span-2"><%= @role.name %></div>
+
+        <div class="px-4 py-2 font-semibold col-span-1">System</div>
+        <div class="px-4 py-2 col-span-2"><%= @role.system.name %></div>
+
+        <div class="px-4 py-2 font-semibold col-span-1">Term</div>
+        <div class="px-4 py-2 col-span-2"><%= @role.term ||= "&infin;".html_safe %> </div>
+
+      </div>
+    </div>
+  </div>
+
+  <% if @role.autodenial_workflow.present? %>
+    <div class="flex flex-ow scrollbar-hide py-4">
+      <div class="text-sm">
+        Auto-denial workflow properties
+      </div>
+    </div>
+    <div class="w-full md:w-12/12">
+      <div class="grid md:grid-cols-1 text-xs">
+        <div class="grid grid-cols-3">
+
+          <div class="px-4 py-2 font-semibold col-span-1">Workflow</div>
+          <div class="px-4 py-2 col-span-2"><%= @role.autodenial_workflow.name %></div>
+
+          <div class="px-4 py-2 font-semibold col-span-1">Description</div>
+          <div class="px-4 py-2 col-span-2"><%= @role.autodenial_workflow.description %></div>
+
+          <%= render partial: "roles/autodenial_workflow_properties/show_#{@role.autodenial_workflow.name.underscore}" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @role.autoapproval_workflow.present? %>
+    <div class="flex flex-ow scrollbar-hide py-4">
+      <div class="text-sm">
+        Auto-approval workflow properties
+      </div>
+    </div>
+    <div class="w-full md:w-12/12">
+      <div class="grid md:grid-cols-1 text-xs">
+        <div class="grid grid-cols-3">
+
+          <div class="px-4 py-2 font-semibold col-span-1">Workflow</div>
+          <div class="px-4 py-2 col-span-2"><%= @role.autoapproval_workflow.name %></div>
+
+          <div class="px-4 py-2 font-semibold col-span-1">Description</div>
+          <div class="px-4 py-2 col-span-2"><%= @role.autoapproval_workflow.description %></div>
+
+          <%= render partial: "roles/autoapproval_workflow_properties/show_#{@role.autoapproval_workflow.name.underscore}" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @role.approval_workflow.present? %>
+    <div class="flex flex-ow scrollbar-hide py-4">
+      <div class="text-sm">
+        Approval workflow properties
+      </div>
+    </div>
+    <div class="w-full md:w-12/12">
+      <div class="grid md:grid-cols-1 text-xs">
+        <div class="grid grid-cols-3">
+
+          <div class="px-4 py-2 font-semibold col-span-1">Workflow</div>
+          <div class="px-4 py-2 col-span-2"><%= @role.approval_workflow.name %></div>
+
+          <div class="px-4 py-2 font-semibold col-span-1">Description</div>
+          <div class="px-4 py-2 col-span-2"><%= @role.approval_workflow.description %></div>
+
+          <%= render partial: "roles/approval_workflow_properties/show_#{@role.approval_workflow.name.underscore}" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @role.provision_workflow.present? %>
+    <div class="flex flex-ow scrollbar-hide py-4">
+      <div class="text-sm">
+        Provision workflow properties
+      </div>
+    </div>
+    <div class="w-full md:w-12/12">
+      <div class="grid md:grid-cols-1 text-xs">
+        <div class="grid grid-cols-3">
+
+          <div class="px-4 py-2 font-semibold col-span-1">Workflow</div>
+          <div class="px-4 py-2 col-span-2"><%= @role.provision_workflow.name %></div>
+
+          <div class="px-4 py-2 font-semibold col-span-1">Description</div>
+          <div class="px-4 py-2 col-span-2"><%= @role.provision_workflow.description %></div>
+
+          <%= render partial: "roles/provision_workflow_properties/show_#{@role.provision_workflow.name.underscore}" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+
+  <div class="p-1 flex flex-ow scrollbar-hide mt-5 border-b border-gray-200">
+    <div class="font-medium text-base">
+      Accesses
+    </div>
+  </div>
+
+  <div class="p-1">
+    <div class="flex flex-ow scrollbar-hide">
+      <div class="basis-1/2">
+        <div class="lg:w-2/3">
+          <%= search_form_for @q, url: role_path(@role), data: { turbo_frame: :results, controller: "filter", action: "input->filter#submit" } do |f| %>
+            <%= f.search_field :user_displayname_cont,
+                                placeholder: "Filter",
+                                autofocus: false,
+                                autocomplete: 'off',
+                                class: "flex rounded-sm border border-gray-200 focus:ring-1 py-0.5 w-full bg-white" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%= turbo_frame_tag :results, data: { turbo_action: 'advance' } do %>
+      <table class="w-full border table-auto md:table-fixed">
+        <thead>
+          <tr class="bg-gray-100 text-gray text-sm leading-3">
+            <th class="py-2 px-3 text-left md:w-56"><%= sort_link @q, :user_displayname, "User", {}, { data: { turbo_frame: :results} } %></th>
+            <th class="py-2 px-3 text-left md:w-56"></th>
+          </tr>
+        </thead>
+        <tbody id="accesses" class="text-gray-600 text-sm font-light">
+        </tbody>
+      </table>
+
+  <%= turbo_frame_tag :pagination, loading: :lazy,  data: { turbo_action: 'advance' },
+                      src: role_path(format: :turbo_stream, q: params[:q]&.to_unsafe_h) %>
+  <% end %>
+
+
+
+</div>

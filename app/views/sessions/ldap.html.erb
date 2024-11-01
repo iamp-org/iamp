@@ -1,0 +1,12 @@
+<%= form_with(url: '/auth/ldap', data: { turbo: "false" }) do |f| %>
+  <div class="mb-3">
+    <%= f.text_field :username, placeholder: "Username", class: "w-full hover:outline-none focus:outline-none hover:border-yellow-500 h-8" %>
+  </div>
+  <div class="mb-3">
+    <%= f.password_field :password, placeholder: "Password", class: "w-full hover:outline-none focus:outline-none hover:border-yellow-500 h-8" %>
+  </div>
+  <%= f.button type: "submit", class: "w-full p-1 bg-gray-900 bg-gray-600 text-white hover:bg-slate-600" do %>
+    Sign in
+  <% end %>
+<% end %>
+

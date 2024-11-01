@@ -1,0 +1,13 @@
+<%= turbo_stream.append :accesses do %>
+  <% @accesses.each do |access| %>
+    <%= render "access", access: access %>
+  <% end %>
+<% end %>
+
+<% if @pagy.next.present? %>
+  <%= turbo_stream.replace :pagination do %>
+    <%= turbo_frame_tag :pagination, 
+                        loading: :lazy,
+                        src: role_path(format: :turbo_stream, page: @pagy.next, q: params[:q]&.to_unsafe_h) %>
+  <% end %>
+<% end %>

@@ -1,0 +1,65 @@
+<ul>
+  <li class="flex flex-wrap border-b border-gray-200 mt-3">
+    <div class="w-full sm:w-1/2 md:w-1/3 px-4 py-2">
+      <h3 class="font-medium text-base">
+          Your access roles
+      </h3>
+    </div>
+  </li>
+
+  <% @accesses.each do |access| %>
+    <li class="flex border-b border-gray-200 py-1 items-center">
+      <div class="w-full sm:w-1/2 md:w-1/2 px-4">
+        <% if access.role.approval_workflow.name == "SimpleList & PrioritizedList" %>
+          <div class="w-full mb-1">
+              <p class="text-xs font-small text-yellow-600 truncate">
+                Note: The requested access role has multiple approval levels
+              </p>
+          </div>
+        <% end %>
+
+        <p class="text-xs font-medium truncate">
+          <%= access.role.system.name %>
+        </p>
+        <p class="text-xs text-gray-500 truncate">
+          <%= access.role.name %>
+        </p>
+      </div>
+
+      <div class="w-full sm:w-1/2 md:w-1/2 px-4">
+        <% if !access.approved? %>
+          <div class="flex font-medium text-xs justify-end">
+            <span class="text-gray-400 text-xs inline-flex rounded">
+              <%= content_tag(:i, "schedule", class: "material-icons md-18 mr-1.5") %>
+              <div class="hidden md:block">pending approval from the list:</div>
+            </span>
+          </div>
+          <div class="flex text-gray-400 font-medium text-xs justify-end">
+            <ul class="list-disc ml-8 py-1 hidden md:block">
+              <% AccessApprovalService.get_approvers(access.role).each do |approver| %>
+                <% if access.approvals.include?(approver.id) %>
+                  <li>
+                    <span class="text-green-500 text-xs inline-flex rounded">
+                      <div class="hidden md:block"><%= approver.displayname %></div>
+                      <%= content_tag(:i, "done", class: "material-icons md-18 ml-1") %>
+                    </span>
+                  </li>
+                <% else %>
+                  <li><%= approver.displayname %></li>
+                <% end %>
+              <% end %>
+            </ul>
+        <% else %>
+          <div class="flex text-white font-medium text-xs justify-end">
+            <span class="text-green-500 text-xs inline-flex rounded">
+              <%= content_tag(:i, "done", class: "material-icons md-18 mr-1.5") %>
+              <div class="hidden md:block">approved</div>
+            </span>
+          </div>
+        <% end %>
+      </div>
+
+    </li>
+  <% end %>
+
+</ul>

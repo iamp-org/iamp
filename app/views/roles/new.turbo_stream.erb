@@ -1,0 +1,5 @@
+<%= turbo_stream.append :notice do %>
+  <%= turbo_frame_tag 'notice' do %>
+    <%= render partial: "shared/flash", locals: { flash: flash } %>
+  <% end %>
+<% end %>

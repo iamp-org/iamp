@@ -1,0 +1,35 @@
+<%= turbo_frame_tag :remote_modal_new_permission, target: :_top do %>
+  <div data-controller="modal" class="hidden fixed inset-0 overflow-y-auto flex items-center justify-center backdrop " style="z-index: 9999;">
+    <div class="m-1 bg-white rounded shadow max-h-screen w-full max-w-lg relative">
+
+      <%= link_to permissions_path, data: { action: 'click->modal#close' }, class: 'absolute top-0 right-0 m-4' do %>
+        <%= content_tag(:i, "close", class: "material-icons") %>
+      <% end %>
+      
+      <div class="p-6">
+        <%= form_with model: @permission, url: permissions_path(@permission), method: :post, data: {turbo: false} do |form| %>
+          <div class="py-3 mb-4">
+            <%= form.label "User", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.select :user_id, options_for_select(@users ? @users.map { |option| [option.displayname, option.id] } : []), 
+                { include_hidden: false, include_blank: true }, 
+                { data: {controller: 'slim', slim_options: { showSearch: true, placeholderText: '' }.to_json}} %>
+          </div>
+
+          <div class="mb-4">
+            <%= form.label "System", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.select :system_id, options_from_collection_for_select(@systems, "id", "name", @system&.id), 
+                { include_hidden: false, include_blank: true }, 
+                { data: {controller: 'slim', slim_options: { showSearch: true, placeholderText: '' }.to_json}} %>
+          </div>
+
+          <div class="flex justify-end mt-6">
+            <div class="flex lg:flex-row lg:items-center">
+              <%= form.submit "Submit", class: "px-3 py-1 text-xs font-medium text-center text-white bg-blue-700 rounded-sm hover:bg-blue-800 w-20 h-6" %>
+            </div>
+          </div>
+        <% end %> 
+      </div>
+
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>IAMP</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/slim-select/2.4.5/slimselect.min.css", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+  <%= favicon_link_tag asset_path('logo.png') %>
+</head>
+
+<body>
+  <div data-controller="reveal" data-reveal-hidden-class="-translate-x-full">
+
+    <header class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 2xl:px-96">
+      <div class="px-3 py-3 lg:px-5 lg:pl-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center justify-start">
+            <button data-action="click->reveal#toggle" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+              <i class="material-icons">menu_open</i>
+            </button>
+            <a href="https://<%= ENV['HOSTNAME'] %>" class="flex ml-2 md:mr-24">
+              <%= image_tag "logo.png", alt: "", class: "w-8 h-8 mr-3"%>
+              <span class="self-center text-md font-semibold sm:text-md whitespace-nowrap">IAMP</span>
+            </a>
+          </div>
+          <div class="flex items-center text-sm">
+            <%= button_to logout_path, method: :post, data: {turbo: false}, class: "flex items-center text-gray-900" do %>
+              <div class="inline-flex items-center">
+                <i class="material-icons">logout</i> <div class="ml-2 font-medium hidden sm:block"> Sign out </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="flex 2xl:px-96 text-sm">
+      <aside data-reveal-target="item" class="fixed top-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full border-r sm:translate-x-0">
+        <div class="h-full px-3 pb-4 overflow-y-auto bg-white">
+            <ul class="space-y-1 font-medium">
+              <li>
+                <%= link_to root_path, class: ["flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100", ("bg-gray-100" if request.path == root_path)] do %>
+                  <%= content_tag(:i, "admin_panel_settings", class: "material-icons") %>
+                  <%= content_tag(:span, "Profile", class: "flex-1 ml-3 whitespace-nowrap") %>
+                  <!--%= content_tag(:span, "3", class: "inline-flex items-center justify-center w-3 h-3 p-3 text-sm text-blue-800 bg-blue-100 rounded-full") %-->
+                <% end %>
+              </li>
+              <li>
+                <%= link_to ssh_preferences_path, class: ["flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100", ("bg-gray-100" if request.path == ssh_preferences_path)] do %>
+                  <%= content_tag(:i, "terminal", class: "material-icons") %>
+                  <%= content_tag(:span, "SSH preferences", class: "flex-1 ml-3 whitespace-nowrap") %>
+                <% end %>
+              </li>
+              <li>
+                <%= link_to roles_path, class: ["flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100", ("bg-gray-100" if request.path == roles_path)] do %>
+                  <%= content_tag(:i, "pattern", class: "material-icons") %>
+                  <%= content_tag(:span, "Access roles", class: "flex-1 ml-3 whitespace-nowrap") %>
+                <% end %>
+              </li>
+              <li>
+                <% if current_user_is_admin_or_has_any_system? %>
+                  <%= link_to audit_logs_path, class: ["flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100", ("bg-gray-100" if request.path == audit_logs_path)] do %>
+                    <%= content_tag(:i, "event_note", class: "material-icons") %>
+                    <%= content_tag(:span, "Audit logs", class: "flex-1 ml-3 whitespace-nowrap") %>
+                  <% end %>
+                <% end %>
+              </li>
+              <% if current_user.is_admin? %>
+                <li>
+                  <%= link_to users_path, class: ["flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100", ("bg-gray-100" if request.path == users_path)] do %>
+                    <%= content_tag(:i, "people", class: "material-icons") %>
+                    <%= content_tag(:span, "Users", class: "flex-1 ml-3 whitespace-nowrap") %>
+                  <% end %>
+                </li>
+                <li>
+                  <%= link_to permissions_path, class: ["flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100", ("bg-gray-100" if request.path == permissions_path)] do %>
+                    <%= content_tag(:i, "settings", class: "material-icons") %>
+                    <%= content_tag(:span, "Permissions", class: "flex-1 ml-3 whitespace-nowrap") %>
+                    <%#= content_tag(:i, "arrow_drop_down", class: "material-icons ml-2") %>
+                  <% end %>
+                </li>
+                <li>
+                  <%= link_to tokens_path, class: ["flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100", ("bg-gray-100" if request.path == tokens_path)] do %>
+                    <%= content_tag(:i, "settings", class: "material-icons") %>
+                    <%= content_tag(:span, "API tokens", class: "flex-1 ml-3 whitespace-nowrap") %>
+                    <%#= content_tag(:i, "arrow_drop_down", class: "material-icons ml-2") %>
+                  <% end %>
+                </li>
+              <% end %>
+
+            </ul>
+        </div>
+      </aside>
+
+      <main class="container mt-20 sm:ml-64">
+        <%= render partial: "shared/flash" %>
+        <%= yield %>
+        <%= turbo_frame_tag "remote_modal" %>
+      </main>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+<div class="md:flex mt-3 px-4">
+  <div class="md:w-1/3">
+    <%= form.label "Approvers list", class: "block text-gray-600 uppercase text-xs font-semibold mb-2 required-label w-full" %>
+  </div>
+  <div class="md:w-2/3 w-full">
+    <% selected_options = @role[:approval_workflow_properties]["list1"] %>
+    <%= form.select "approval_workflow_properties][list1", 
+                    options_for_select(@user_options.map { |option| [option.displayname, option.id] }, selected_options), {include_hidden: false},
+                    { multiple: true, data: {controller: 'slim', slim_options: { showSearch: true, placeholderText: '' }.to_json} } %>
+    <p class="py-2 text-xs text-yellow-700"><%= workflow&.description %></p>
+  </div>
+</div>

@@ -1,0 +1,128 @@
+<%= turbo_frame_tag :remote_modal_new_access, target: :_top do %>
+  <div data-controller="modal" class="hidden fixed inset-0 overflow-y-auto flex items-center justify-center backdrop " style="z-index: 9999;">
+    <!-- Modal Card -->
+    <div class="m-1 bg-white rounded shadow max-h-screen w-full max-w-lg relative">
+      <!-- Close button moved to top right corner -->
+      <%= link_to root_path, data: { action: 'click->modal#close' }, class: 'absolute top-0 right-0 m-4' do %>
+        <%= content_tag(:i, "close", class: "material-icons") %>
+      <% end %>
+      
+      <div class="p-6">
+
+        <div data-controller="tabs" data-tabs-active-tab-class="-mb-px border-l border-t border-r rounded-t text-blue-700">
+          <ul class="list-reset flex border-b items-center justify-center uppercase">
+            <li class="mb-1 mr-1 cursor-pointer hover:text-blue-700 transition ease-in-out duration-150" data-tabs-target="tab" data-action="click->tabs#change">
+              <span class="border-transparent border-b-2 pb-1 px-2 font-semibold">For you</span>
+            </li>
+            <li class="mb-1 mr-1 cursor-pointer hover:text-blue-700 transition ease-in-out duration-150 " data-tabs-target="tab" data-action="click->tabs#change">
+              <span class="border-transparent border-b-2 pb-1 px-2 font-semibold">For SA</span>
+            </li>
+            <li class="mb-1 mr-1 cursor-pointer hover:text-blue-700 transition ease-in-out duration-150 " data-tabs-target="tab" data-action="click->tabs#change">
+              <span class="border-transparent border-b-2 pb-1 px-2 font-semibold">For subordinate</span>
+            </li>
+          </ul>
+
+          <div class="hidden py-4 px-4" data-tabs-target="panel">
+            <%= form_with model: @access, url: accesses_path(@access), method: :post, data: {turbo: false} do |form| %>
+
+              <%= form.hidden_field :user_id, value: current_user.id %>
+
+              <%= form.label :system, class: "block uppercase text-xs font-bold mb-2 required-label" %>
+              <%= form.select :system_id, options_from_collection_for_select(@systems, "id", "name", @system&.id), 
+                              { include_hidden: false, include_blank: true }, 
+                              { data: {controller: 'slim', slim_options: { showSearch: true, placeholderText: '' }.to_json},
+                                onchange: "system_select.src=`${location.origin}/accesses/new?system=${this.value}`" } %>
+
+              <%= turbo_frame_tag "system_select" do %>
+                <% roles = Role.where(system_id: params[:system].presence) %>
+                <%= form.label :role, class: "block uppercase text-xs font-bold mb-2 mt-3 required-label" %>
+                <%= form.select :role_id, options_for_select(roles ? roles.map { |option| [option.name, option.id] } : []), {include_hidden: false}, 
+                              { data: {controller: 'slim', slim_options: { showSearch: false, placeholderText: '' }.to_json} } %>
+              <% end %>
+
+              <%= form.label :justification, class: "block uppercase text-xs font-bold mb-2 mt-3" %>
+              <%= form.text_area :justification, class: "border-1 py-0.5 border-gray-200 rounded focus:ring-1 w-full" %>
+
+              <div class="flex justify-end mt-6">
+                <div class="flex lg:flex-row lg:items-center">
+                  <%= form.submit "Submit", class: "px-3 py-1 text-xs font-medium text-center text-white bg-blue-700 rounded-sm hover:bg-blue-800 w-20 h-6" %>
+                </div>
+              </div>
+            <% end %> 
+          </div>
+
+          <div class="hidden py-4 px-4" data-tabs-target="panel">
+            <%= form_with model: @access, url: accesses_path(@access), method: :post, data: {turbo: false} do |form| %>
+
+              <%= form.label :service_account, class: "block uppercase text-xs font-bold mb-2 required-label" %>
+              <%= form.select :user_id, options_for_select(@service_accounts ? @service_accounts.map { |option| [option.displayname, option.id] } : []), 
+                            { include_hidden: false, include_blank: true }, 
+                            { data: {controller: 'slim', slim_options: { showSearch: false, placeholderText: '' }.to_json}} %>
+
+              <%= form.label :system, class: "block uppercase text-xs font-bold mb-2 mt-3 required-label" %>
+              <%= form.select :system_id, options_from_collection_for_select(@systems, "id", "name", @system&.id), 
+                              { include_hidden: false, include_blank: true }, 
+                              { data: {controller: 'slim', slim_options: { showSearch: true, placeholderText: '' }.to_json},
+                                onchange: "system_select2.src=`${location.origin}/accesses/new?system=${this.value}`" } %>
+
+              <%= turbo_frame_tag "system_select2" do %>
+                <% roles = Role.where(system_id: params[:system].presence) %>
+                <%= form.label :role, class: "block uppercase text-xs font-bold mb-2 mt-3 required-label" %>
+                <%= form.select :role_id, options_for_select(roles ? roles.map { |option| [option.name, option.id] } : []), 
+                              { include_hidden: false }, 
+                              { data: {controller: 'slim', slim_options: { showSearch: false, placeholderText: '' }.to_json} } %>
+              <% end %>
+
+              <%= form.label :justification, class: "block uppercase text-xs font-bold mb-2 mt-3" %>
+              <%= form.text_area :justification, class: "border-1 py-0.5 border-gray-200 rounded focus:ring-1 w-full" %>
+
+              <div class="flex justify-end mt-6">
+                <div class="flex lg:flex-row lg:items-center">
+                  <%= form.submit "Submit", class: "px-3 py-1 text-xs font-medium text-center text-white bg-blue-700 rounded-sm hover:bg-blue-800 w-20 h-6" %>
+                </div>
+              </div>
+            <% end %> 
+          </div>
+          
+          <div class="hidden py-4 px-4" data-tabs-target="panel">
+            <%= form_with model: @access, url: accesses_path(@access), method: :post, data: {turbo: false} do |form| %>
+
+              <%= form.label :subordinate, class: "block uppercase text-xs font-bold mb-2 required-label" %>
+              <%= form.select :user_id, options_for_select(@subordinates ? @subordinates.map { |option| [option.displayname, option.id] } : []), 
+                            { include_hidden: false, include_blank: true }, 
+                            { data: {controller: 'slim', slim_options: { showSearch: false, placeholderText: '' }.to_json}} %>
+
+              <%= form.label :system, class: "block uppercase text-xs font-bold mb-2 mt-3 required-label" %>
+              <%= form.select :system_id, options_from_collection_for_select(@systems, "id", "name", @system&.id), 
+                              { include_hidden: false, include_blank: true }, 
+                              { data: {controller: 'slim', slim_options: { showSearch: true, placeholderText: '' }.to_json},
+                                onchange: "system_select3.src=`${location.origin}/accesses/new?system=${this.value}`" } %>
+
+              <%= turbo_frame_tag "system_select3" do %>
+                <% roles = Role.where(system_id: params[:system].presence) %>
+                <%= form.label :role, class: "block uppercase text-xs font-bold mb-2 mt-3 required-label" %>
+                <%= form.select :role_id, options_for_select(roles ? roles.map { |option| [option.name, option.id] } : []), 
+                              { include_hidden: false }, 
+                              { data: {controller: 'slim', slim_options: { showSearch: false, placeholderText: '' }.to_json} } %>
+              <% end %>
+
+              <%= form.label :justification, class: "block uppercase text-xs font-bold mb-2 mt-3" %>
+              <%= form.text_area :justification, class: "border-1 py-0.5 border-gray-200 rounded focus:ring-1 w-full" %>
+
+              <div class="flex justify-end mt-6">
+                <div class="flex lg:flex-row lg:items-center">
+                  <%= form.submit "Submit", class: "px-3 py-1 text-xs font-medium text-center text-white bg-blue-700 rounded-sm hover:bg-blue-800 w-20 h-6" %>
+                </div>
+              </div>
+            <% end %> 
+          </div>
+
+        </div>
+
+
+      </div>
+
+    </div>
+  </div>
+
+<% end %>

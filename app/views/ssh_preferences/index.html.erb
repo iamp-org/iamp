@@ -1,0 +1,29 @@
+<div class="container px-5 py-1 mx-auto text-sm">
+
+  <div class="w-full md:w-12/12">
+    <div class="grid md:grid-cols-1 text-xs">
+      <div class="grid grid-cols-3">
+
+        <div class="px-1 py-2 font-semibold col-span-1">Username</div>
+        <div class="py-2 col-span-2"><%= current_user.username %></div>
+
+        <div class="flex px-1 py-2 font-semibold col-span-1 ">
+          <%= content_tag(:span, "SSH public key", class: "py-1") %>
+          <% if current_user.sshkey.present? %>
+            <%= button_to ssh_key_path(current_user), method: :delete, data: { turbo: false }, class: ["flex text-red-400 ml-1"] do %>
+              <%= content_tag(:i, "clear", class: "material-icons") %>
+            <% end %>
+          <% else %>
+            <%= link_to new_ssh_key_path, class: ["flex text-blue-400 ml-1"] do %>
+              <%= content_tag(:i, "file_upload", class: "material-icons ") %>
+            <% end %>
+          <% end %>
+        </div>
+
+        <div class="py-2 col-span-2 break-words"><%= current_user.sshkey %></div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

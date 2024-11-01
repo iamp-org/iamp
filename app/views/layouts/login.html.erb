@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>IAMP</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+  
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+  <%= favicon_link_tag asset_path('logo.png') %>
+</head>
+
+  <body>
+    <div class="flex items-center justify-center h-screen">
+      <div class="min-w-fit flex-col bg-white px-8 py-8 shadow-md rounded-[4px] w-96">
+        <div class="mb-8 flex justify-center">
+          <%= image_tag "logo.png", alt: "", class: "w-22 h-20"%>
+        </div>
+
+        <!-- Display flash messages -->
+        <% flash.each do |key, value| %>
+          <div class="flash <%= key %>">
+            <div class="flex bg-red-100 rounded-lg p-4 mb-4 text-sm text-red-700">
+              <div> <span class="font-medium">Error!</span> <%= value %></div>
+            </div>
+          </div>
+        <% end %>
+
+        <%= yield %>
+        <!--div class="mt-5 flex text-center text-sm text-gray-400">
+          <p>
+            Identity & Access Management Platform <br />
+            For any questions contact <a class="underline" href="mailto:<%= @maintainer_email %>"><%= @maintainer_email.sub(/@.*/, '') %></a>
+          </p>
+        </div-->
+      </div>
+    </div>
+  </body>
+</html>

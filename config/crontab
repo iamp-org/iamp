@@ -1,0 +1,9 @@
+SHELL=/bin/bash
+BASH_ENV=/rails/.cron.env
+
+0 * * * * cd /rails && bin/rails runner "require './lib/sync_users.rb'" > /proc/1/fd/1 2>&1
+*/5 * * * * cd /rails && bin/rails runner "require './lib/sync_systems.rb'" > /proc/1/fd/1 2>&1
+*/30 * * * * cd /rails && bin/rails runner "require './lib/sync_posix_users.rb'" > /proc/1/fd/1 2>&1
+0 0 * * * cd /rails && /usr/bin/flock -n /tmp/provide_accesses.lock bin/rails runner "require './lib/provide_accesses.rb'" > /proc/1/fd/1 2>&1
+*/3 * * * * cd /rails && bin/rails runner "require './lib/revoke_accesses.rb'" > /proc/1/fd/1 2>&1
+0 1 * * * cd /rails && bin/rails runner "require './lib/notify_owners.rb'" > /proc/1/fd/1 2>&1

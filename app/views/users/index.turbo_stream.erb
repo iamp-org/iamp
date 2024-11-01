@@ -1,0 +1,13 @@
+<%= turbo_stream.append :users do %>
+  <% @users.each do |user| %>
+    <%= render "user", user: user %>
+  <% end %>
+<% end %>
+
+<% if @pagy.next.present? %>
+  <%= turbo_stream.replace :pagination do %>
+    <%= turbo_frame_tag :pagination, 
+                        loading: :lazy,
+                        src: users_path(format: :turbo_stream, page: @pagy.next, q: params[:q]&.to_unsafe_h) %>
+  <% end %>
+<% end %>

@@ -1,0 +1,139 @@
+servers:
+  web:
+    hosts:
+      - iamp.example.com
+    labels:
+      traefik.enable: true
+      traefik.http.routers.iamp-web.rule: Host(`iamp.example.com`)
+      traefik.http.routers.iamp-web.entrypoints: websecure
+      traefik.http.routers.iamp-web.tls: true
+    options:
+      network: "private"
+  cron:
+    hosts:
+      - iamp.example.com
+    cmd: bash -c "cat config/crontab | crontab - && declare -p | grep -Ev '\b(BASHOPTS|BASH_VERSINFO|EUID|PPID|SHELLOPTS|UID)\b' >> /rails/.cron.env && cron -f"
+    options:
+      user: root
+      network: "private"
+  job:
+    hosts:
+      - iamp.example.com
+    cmd: bundle exec sidekiq -C config/sidekiq.yml -v
+    options:
+      network: "private"
+
+# Inject ENV variables into containers (secrets come from .env).
+# Remember to run `kamal env push` after making changes!
+env:
+  clear:
+    RAILS_ENV: production
+    RAILS_SERVE_STATIC_FILES: true
+    RAILS_LOG_TO_STDOUT: true
+    DB_HOST: iamp-db
+    HOSTNAME: iamp.example.work
+    REDIS_URL: "redis://iamp-redis:6379/0"
+  secret:
+    - AUTH_METHOD
+    - RAILS_MASTER_KEY
+    - POSTGRES_PASSWORD
+    - INVENTORY_TOKEN
+    - ADMINS
+    - OL_HOSTNAME
+    - OL_USERNAME
+    - OL_PASSWORD
+    - OL_BASE
+    - LDAP_HOST
+    - LDAP_USERNAME
+    - LDAP_PASSWORD
+    - LDAP_BASE
+    - LDAP_USER_ACCOUNTS_FILTER
+    - LDAP_SERVICE_ACCOUNTS_FILTER
+    - SMTP_ADDRESS
+    - SMTP_USERNAME
+    - SMTP_PASSWORD
+    - SYSTEMS_API_URL
+    - SYSTEMS_API_TOKEN
+    - ZTA_TOKEN
+    - OIDC_HOSTNAME
+    - OIDC_ISSUER
+    - OIDC_AUTHORIZATION_ENDPOINT
+    - OIDC_TOKEN_ENDPOINT
+    - OIDC_USERINFO_ENDPOINT
+    - OIDC_IDENTIFIER
+    - OIDC_SECRET
+    - OIDC_REDIRECT_URI
+
+# Use accessory services (secrets come from .env).
+accessories:
+  db:
+    image: postgres:14.0
+    host: iamp.example.com
+    # port: 5432
+    env:
+      clear:
+        POSTGRES_USER: iamp
+        POSTGRES_DB: iamp_production
+      secret:
+        - POSTGRES_PASSWORD
+    files:
+      - db/production.sql:/docker-entrypoint-initdb.d/setup.sql
+      # - dump.sql:/docker-entrypoint-initdb.d/setup.sql
+    directories:
+      - data:/var/lib/postgresql/data
+    options:
+      network: "private"
+  db_backup:
+    image: eeshugerman/postgres-backup-s3:14
+    roles:
+      - web
+    env:
+      clear:
+        SCHEDULE: '@daily'     # optional
+        BACKUP_KEEP_DAYS: 14     # optional
+        # S3_REGION: unused
+        S3_PREFIX: backups
+        S3_ENDPOINT: https://s3.example.com
+        S3_BUCKET: iamp
+        POSTGRES_HOST: iamp-db
+        POSTGRES_USER: iamp
+        POSTGRES_DATABASE: iamp_production
+      secret:
+        - POSTGRES_PASSWORD
+        - S3_ACCESS_KEY_ID
+        - S3_SECRET_ACCESS_KEY
+    options:
+      network: "private"
+  redis:
+    image: redis:latest
+    # host: iamp.example.com
+    roles:
+      - web
+      - job
+    # volumes:
+    #   - /var/lib/redis:/data
+    directories:
+      - data:/data
+    options:
+      network: "private"
+
+# Configure custom arguments for Traefik
+traefik:
+  options:
+    volume:
+      - /etc/ssl/iamp/certs:/etc/traefik/certs:ro
+      - /etc/ssl/iamp/dyn.yml:/etc/traefik/dyn.yml
+    publish:
+      - "443:443"
+    network: "private"
+  args:
+    # entryPoints.web.address: ":80"
+    entryPoints.websecure.address: ":443"
+    log.level: INFO
+
+    entryPoints.web.http.redirections.entryPoint.to: websecure
+    entryPoints.web.http.redirections.entryPoint.scheme: https
+    entryPoints.web.http.redirections.entrypoint.permanent: true
+    # providers.docker: true
+    # providers.docker.exposedbydefault: false
+    providers.file.filename: /etc/traefik/dyn.yml

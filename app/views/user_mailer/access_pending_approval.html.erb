@@ -1,0 +1,10 @@
+<p><strong>System:</strong>&nbsp;<%= @access.role.system&.name %></p>
+<p><strong>Role:</strong>&nbsp;<%= @access.role&.name %></p>
+<p><strong>User:</strong>&nbsp;<%= @access.user&.displayname %></p>
+<% if @access.justification.present? %>
+  <p><strong>Justification:</strong>&nbsp;<%= @access.justification %></p>
+<% end %>
+
+<% if @access.user_id != @access.requestor_id %>
+  <p>The access is requested by <%= @access.requestor&.displayname || "unknown user" %></p>
+<% end %>

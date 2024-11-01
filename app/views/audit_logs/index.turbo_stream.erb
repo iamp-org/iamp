@@ -1,0 +1,13 @@
+<%= turbo_stream.append :audit_logs do %>
+  <% @audit_logs.each do |audit_log| %>
+    <%= render "audit_log", audit_log: audit_log %>
+  <% end %>
+<% end %>
+
+<% if @pagy.next.present? %>
+  <%= turbo_stream.replace :pagination do %>
+    <%= turbo_frame_tag :pagination, 
+                        loading: :lazy,
+                        src: audit_logs_path(format: :turbo_stream, page: @pagy.next, q: params[:q]&.to_unsafe_h) %>
+  <% end %>
+<% end %>

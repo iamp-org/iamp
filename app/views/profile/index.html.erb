@@ -1,0 +1,26 @@
+<div class="container px-5 py-1 mx-auto text-sm">
+  <div class="flex items-center sm:items-start mx-auto sm:flex-row flex-col text-gray-900">
+    <%= image_tag "no-avatar.jpg", alt: " ", class: "sm:w-10 sm:h-10 h-10 w-10 sm:mr-6 inline-flex items-center justify-center flex-shrink-0 rounded-full" %>
+    <div class="flex-grow sm:text-left text-center mt-3 sm:mt-0">
+      <h1 class="title-font font-bold text-base"><%= current_user.displayname %></h1>
+      <p class="text-xs"><%= current_user.position %></p>
+    </div>
+    <div class="flex-grow sm:text-left mt-3 sm:mt-2 justify-end flex">
+      <%= link_to "Request access", new_access_path, data: { turbo_frame: :main },  
+      class: 'px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-sm hover:bg-blue-800' %>
+    </div>
+  </div>
+  
+  <% if @requests.any? %>
+    <%= render partial: "profile/access_requests" %>
+  <% end %>
+
+  <% if @accesses.any? %>
+    <%= render partial: "profile/accesses" %>
+  <% end %>
+  
+  <% if @sa_accesses.any? %>
+    <%= render partial: "profile/sa_accesses" %>
+  <% end %>
+  
+</div>

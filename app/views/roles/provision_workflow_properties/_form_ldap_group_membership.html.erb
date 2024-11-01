@@ -1,0 +1,28 @@
+<div class="md:flex mt-3 px-4">
+  <div class="md:w-1/3">
+    <%= form.label "Distinguashed Names of LDAP groups", class: "block text-gray-600 uppercase text-xs font-semibold mb-2 required-label w-full" %>
+  </div>
+  <div class="md:w-2/3 w-full">
+    <% if @role.new_record? %>
+      <%= form.select 'provision_workflow_properties][list1', [], {include_hidden: false}, 
+                    { multiple: true, data: {controller: 'slim', slim_options: { addable: true, placeholderText: '' }.to_json}} %>
+    <% else %>
+      <%= form.select 'provision_workflow_properties][list1', options_for_select(Array(@role.provision_workflow_properties["list1"]), @role.provision_workflow_properties["list1"]), {include_hidden: false}, 
+                    { multiple: true, data: {controller: 'slim', slim_options: { addable: true, placeholderText: '' }.to_json}} %>
+    <% end %>
+    <p class="py-2 text-xs text-yellow-700"><%= workflow&.description %></p>
+    <p class="py-2 text-xs text-yellow-700">Make sure the group membership can be managed by IAMP</p>
+  </div>
+</div>
+
+<% if @role.new_record? %>
+  <div class="md:flex mt-3 px-4">
+    <div class="md:w-1/3">
+      <%= form.label "Preserve members", class: "block text-gray-600 uppercase text-xs font-semibold mb-2 w-full" %>
+    </div>
+    <div class="md:w-2/3 w-full flex items-center">
+      <%= form.check_box 'provision_workflow_properties][preserve_members', checked: true, class: "form-checkbox h-4 w-4 text-indigo-600" %>
+      <p class="py-2 text-xs text-yellow-700 ml-2">automatically create accesses for current members. If you uncheck it, all members will be removed</p>
+    </div>
+  </div>
+<% end %>

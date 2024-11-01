@@ -1,0 +1,10 @@
+<div class="md:flex mt-3 px-4">
+  <div class="md:w-1/3 w-full">
+      <%= form.label :limit, class: "block text-gray-600 uppercase text-xs font-semibold mb-2 required-label w-full" %>
+  </div>
+  <div class="md:w-2/3 mb-3 w-full">
+      <%= form.number_field 'autodenial_workflow_properties][limit', value: @role.autodenial_workflow_properties["limit"], 
+                            class: "border-1 py-0.5 border-gray-200 font-light rounded focus:ring-1 w-full" %>
+      <p class="py-2 text-xs text-yellow-700"><%= workflow&.description %></p>
+  </div>
+</div>

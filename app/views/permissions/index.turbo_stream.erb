@@ -1,0 +1,13 @@
+<%= turbo_stream.append :roles do %>
+  <% @permissions.each do |permission| %>
+    <%= render "permission", permission: permission %>
+  <% end %>
+<% end %>
+
+<% if @pagy.next.present? %>
+  <%= turbo_stream.replace :pagination do %>
+    <%= turbo_frame_tag :pagination, 
+                        loading: :lazy,
+                        src: permissions_path(format: :turbo_stream, page: @pagy.next, q: params[:q]&.to_unsafe_h) %>
+  <% end %>
+<% end %>
